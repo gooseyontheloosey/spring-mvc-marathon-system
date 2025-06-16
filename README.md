@@ -1,1 +1,1 @@
-# spring-mvc-zoo-system
+# spring-mvc-marathon-system
