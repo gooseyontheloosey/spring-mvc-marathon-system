@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homework 2: Tasks for hmh15</title>
+</head>
+
+<body>
+<h1>Homework 2: Tasks for hmh15</h1>
+
+<p>Your personal task is to develop a system for a marathon, runners and their rankings.</p>
+
+<h2>Task 1: Configuration [12 marks]</h2>
+<ol>
+    <li>Add all the necessary dependencies for connecting to a MySQL database and showing JSPs. [7 marks]</li>
+    <li>Configure the application to use a MySQL database (username, password, etc.) and to print SQL statements on the console. [5 marks]</li>
+</ol>
+
+<h2>Task 2: Domain Classes [15 marks]</h2>
+<p>Create class <code>co2103.hw2.model.Marathon</code>. With the following private fields:
+<ol>
+    <li><code>int id</code></li>
+    <li><code>String name</code></li>
+    <li><code>List &ltRunner&gt runners</code></li>
+    <li><code>Runner recordHolder</code></li>
+</ol>
+Generate necessary getters and setters. [3 marks]
+</p>
+<p>Create class <code>co2103.hw2.model.Runner</code>. With the following private fields:
+<ul>
+    <li><code>String firstName</code></li>
+    <li><code>List &ltMarathon&gt marathons</code></li>
+    <li><code>List &ltRanks&gt ranks</code></li>
+    <li><code>Ranks mostRecent</code></li>
+</ul>
+Generate necessary getters and setters. [3 marks]
+</p>
+<p>Create class <code>co2103.hw2.model.Ranks</code>. With the following private fields:
+<ol>
+    <li><code>int id</code></li>
+    <li><code>int time</code></li>
+</ol>
+Generate necessary getters and setters. [3 marks]
+</p>
+<p>Generate toString() methods for: [6 marks]
+<ul>
+    <li>Ranks which prints out the <code>id</code> and <code>time</code> of this class.</li>
+    <li>Runner which prints out the <code>firstName</code>, <code>ranks</code>, and <code>mostRecent</code> of this class.</li>
+    <li>Marathon which prints out the <code>id</code>, <code>name</code>, <code>runners</code>, and <code>recordHolder</code> of this class.</li>
+</ul>
+</p>
+
+<h2>Task 3: JPA Annotations [25 marks]</h2>
+<p>Annotate the classes in <code>co2103.hw2.model</code> based on these statements:
+<ul>
+    <li>Add the appropriate annotations so <code>Marathon</code>, <code>Runner</code>, and <code>Ranks</code> become tables in your database. [3 marks]</li>
+    <ul>
+        <li>Their primary keys should be <code>id</code>, <code>firstName</code>, and <code>id</code> respectively. [3 marks]</li>
+        <li>The primary keys of <code>Marathon</code> and <code>Ranks</code> should be generated automatically. [2 marks]</li>
+    </ul>
+    <li>A <code>marathon</code> can have many <code>runners</code> and a <code>runner</code> can belong to many <code>marathons</code>. The relationship between them is bidirectional. Use mappedBy to indicate this. [2 marks]</li>
+    <li>A <code>runner</code> can have multiple <code>ranks</code> but one <code>rank</code> can only belong to one <code>runner</code>. Use a join column as well as another annotation to indicate this. [2 marks]</li>
+    <li>A <code>runner</code> can have only one <code>mostRecent</code> which belongs to one <code>runner</code>. [2 marks]</li>
+    <li>Many <code>runners</code> may have one <code>recordHolder</code>. This <code>recordHolder</code> can belong to multiple <code>runners</code>. [2 marks]</li>
+    <li>If you save a <code>marathon</code>, the <code>runners</code> in the list of <code>runners</code> should be saved too. [2 marks]</li>
+    <li>If a <code>runner</code> is deleted, all its <code>ranks</code> should be deleted too. [2 marks].</li>
+    <li>If a <code>runner</code> is loaded, all its <code>ranks</code> should be loaded too. [2 marks]</li>
+</ul>
+</p>
+<p>Create CRUD repositories for each of your model classes inside the package <code>co2103.hw2.repo</code> called <code>MarathonRepository</code>, <code>RunnerRepository</code>, and <code>RanksRepository</code>. [3 marks]</p>
+
+<h2>Task 4: CRUD Repository Methods [20 marks]</h2>
+<p>
+<ul>
+    <li>Add a method in <code>MarathonRepository</code> which finds the <code>marathons</code> by <code>name</code>. [5 marks]</li>
+    <li>Add a method in <code>MarathonRepository</code> which finds the <code>marathons</code> by the <code>firstName</code> of their <code>recordHolder</code>. [5 marks]</li>
+    <li>Add a method in <code>RunnerRepository</code> which finds the <code>runners</code> by <code>firstName</code>. [5 marks]</li>
+    <li>Add a method in <code>RanksRepository</code> which finds the <code>ranks</code> by <code>time</code>. [5 marks]</li>
+</ul>
+</p>
+
+<h2>Task 5: Displaying Data (Model, View, and Controller) [28 marks]</h2>
+<p>
+<ul>
+    <li>In <code>co2103.hw2.HW2Application</code>, create and store at one instance of every class from <code>co2103.hw2.model</code>. [9 marks]</li>
+    <ul>
+        <li>You will need to use the repositories you have created.</li>
+        <li>You must use implement CommandLineRunner and override its run method in order to create these instances.</li>
+        <li>The database should contain one row on each of the tables with no null or empty records.</li>
+    </ul>
+    <li>Create the controller <code>co2103.hw2.controller.ListController</code> which shows the JSP <code>/src/main/webapp/WEB-INF/views/list.jsp</code> [5 marks]</li>
+    <ul>
+        <li>The model attribute which contains the list of marathons should be called <code>marathons</code>.</li>
+        <li>The request http:localhost:8080/list should list all objects (their toString() representation) from the database on the above JSP. [4 marks]</li>
+    </ul>
+    <li>Create the controller <code>co2103.hw2.controller.DeleteController</code> [1 mark]</li>
+    <li>For each class in package <code>co2103.hw2.model</code>, add a controller method to delete an instance from the database and redirect to the URL <code>/list</code></li>
+    <ul>
+        <li>For class <code>Marathon</code>, the request http://localhost:8080/deleteMarathon?id=5 should delete the marathon with the primary key id from the database. [3 marks]</li>
+        <li>For class <code>Runner</code>, the request http://localhost:8080/deleteRunner?firstName=Example should delete the runner with the primary key firstName from the database. [3 marks]</li>
+        <ul>
+            <li>HINT: You must delete all references to this runner in the marathon.</li>
+        </ul>
+        <li>For class <code>Ranks</code>, the request http://localhost:8080/deleteRanks?id=2 should delete the rank with the primary key id from the database. [3 marks]</li>
+    </ul>
+</ul>
+</p>
+</body>
+</html>
